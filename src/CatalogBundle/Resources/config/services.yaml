@@ -1,7 +1,6 @@
 services:
-  App\Twig: ~
-
-  App\DecoratingMailer:
-    decorates: App\Twig
-    # pass the old service as an argument
-    arguments: ['@CatalogBundle\Decorators\DecoratingTwig.inner']
+  App\CatalogBundle\Decorators\DecoratingTwig:
+    decorates: twig
+    decoration_inner_name: twig.inner
+    arguments: ['@twig.inner']
+    autowire: false

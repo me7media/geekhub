@@ -3,18 +3,28 @@
 namespace App\CatalogBundle\Decorators;
 
 
+use Twig\Environment;
+
 class DecoratingTwig
 {
-
+    /**
+     * @var Environment
+     */
     private $twig;
 
-    public function __construct($twig)
+    /**
+     * DecoratingTwig constructor.
+     * @param Environment $twig
+     */
+    public function __construct(Environment $twig)
     {
+
         $this->twig = $twig;
     }
 
-    public function getFilters()
+    public function load($name)
     {
-        return $this->twig->getFilters();
+        return $this->twig->load($name);
     }
+
 }

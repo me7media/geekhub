@@ -1,8 +1,13 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+#app_annotations:
+#  # loads routes from the PHP annotations of the controllers found in that directory
+#  resource: '../src/CatalogBundle/Controller/'
+#  type:     annotation
 
 catalog_bundle:
   # loads routes from the YAML or XML files found in some bundle directory
   resource: '@CatalogBundle/Controller/'
   type:     annotation
+

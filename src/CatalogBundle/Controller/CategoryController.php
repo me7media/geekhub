@@ -5,6 +5,7 @@ namespace App\CatalogBundle\Controller;
 use App\CatalogBundle\Entity\Category;
 use App\CatalogBundle\Form\CategoryType;
 use App\CatalogBundle\Repository\CategoryRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,22 +18,24 @@ class CategoryController extends AbstractController
 {
     /**
      * @Route("/", name="category_index", methods={"GET"})
+     * @Template()
      * @param CategoryRepository $categoryRepository
-     * @return Response
+     * @return array
      */
-    public function index(CategoryRepository $categoryRepository): Response
+    public function index(CategoryRepository $categoryRepository)
     {
-        return $this->render('category/index.html.twig', [
-            'categories' => $categoryRepository->findAll(),
-        ]);
+        return [
+            'categories' => $categoryRepository->findAll()
+        ];
     }
 
     /**
      * @Route("/new", name="category_new", methods={"GET","POST"})
+     * @Template()
      * @param Request $request
-     * @return Response
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function new(Request $request): Response
+    public function new(Request $request)
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
@@ -46,31 +49,33 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('category_index');
         }
 
-        return $this->render('category/new.html.twig', [
+        return [
             'category' => $category,
             'form' => $form->createView(),
-        ]);
+        ];
     }
 
     /**
      * @Route("/{id}", name="category_show", methods={"GET"})
+     * @Template()
      * @param Category $category
-     * @return Response
+     * @return array
      */
-    public function show(Category $category): Response
+    public function show(Category $category)
     {
-        return $this->render('category/show.html.twig', [
+        return [
             'category' => $category,
-        ]);
+        ];
     }
 
     /**
      * @Route("/{id}/edit", name="category_edit", methods={"GET","POST"})
+     * @Template()
      * @param Request $request
      * @param Category $category
-     * @return Response
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function edit(Request $request, Category $category): Response
+    public function edit(Request $request, Category $category)
     {
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
@@ -81,10 +86,10 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('category_index');
         }
 
-        return $this->render('category/edit.html.twig', [
+        return [
             'category' => $category,
             'form' => $form->createView(),
-        ]);
+        ];
     }
 
     /**
@@ -95,7 +100,7 @@ class CategoryController extends AbstractController
      */
     public function delete(Request $request, Category $category): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($category);
             $entityManager->flush();

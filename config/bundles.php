@@ -12,4 +12,8 @@ return [
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
+
+    //My
+    //Category Bundle
+    App\CatalogBundle\CatalogBundle::class => ['all' => true],
 ];

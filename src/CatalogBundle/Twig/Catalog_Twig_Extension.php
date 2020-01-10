@@ -100,7 +100,7 @@ class Catalog_Twig_Extension extends AbstractExtension
         $todayOrDate = new \DateTime($date);
 
         $resultDays = [];
-        for($i = 0; count($resultDays) == 7; $i++) {
+        for($i = 0; count($resultDays) < 7; $i++) {
             $todayOrDate->add(new DateInterval("P{$i}D"));
             $newDay = $todayOrDate->format('d F');
             $dbDay = $todayOrDate->format('Y-m-d');

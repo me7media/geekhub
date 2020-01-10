@@ -27,7 +27,7 @@
             <tr>
                 <td colspan="3">no records found</td>
                 <td>
-                    {% if isfriday() %}
+                    {% if isfriday('2020-01-10') %}
                         Lets get beer)
                     {% endif %}
                 </td>
@@ -35,7 +35,7 @@
         <tr>
             <td>
                 <select>
-                    {{ loopweek('today', true) }}
+                    {{ loopweek() }}
                 </select>
             </td>
         </tr>

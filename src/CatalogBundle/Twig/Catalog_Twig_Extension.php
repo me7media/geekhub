@@ -2,7 +2,9 @@
 
 namespace App\CatalogBundle\Twig;
 
+use DateInterval;
 use \Twig\Extension\AbstractExtension;
+use Twig\Markup;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
@@ -15,6 +17,7 @@ class Catalog_Twig_Extension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('loopweek', [$this, 'loopWeek']),
             new TwigFunction('isfriday', [$this, 'isFridayToday']),
         ];
     }
@@ -53,8 +56,8 @@ class Catalog_Twig_Extension extends AbstractExtension
     {
         $date = $this->isDate($date) ? $date : 'today';
 
-        $today = new \DateTime($date);
-        $day_of_week = $today->format('D');
+        $todayOrDate = new \DateTime($date);
+        $day_of_week = $todayOrDate->format('D');
         return $day_of_week == 'Fri';
     }
 
@@ -77,6 +80,44 @@ class Catalog_Twig_Extension extends AbstractExtension
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * loop next 7 days in options tag for select tag
+     * @param null $startdate - set start date
+     * @param boolean $weekends - to render weekends
+     * @param null $l - set user locale
+     * @return string
+     * @throws \Exception
+     */
+    public function loopWeek($startdate = null, $weekends = true, $l = null)
+    {
+        $locale = $l ? $l : @explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE'])[0] ?: 'us_US';
+        setlocale(LC_TIME, $locale . '.UTF-8');
+
+        $date = $this->isDate($startdate) ? $startdate : 'today';
+
+        $todayOrDate = new \DateTime($date);
+
+        $resultDays = [];
+        for($i = 0; count($resultDays) == 7; $i++) {
+            $todayOrDate->add(new DateInterval("P{$i}D"));
+            $newDay = $todayOrDate->format('d F');
+            $dbDay = $todayOrDate->format('Y-m-d');
+            $weekDay = $todayOrDate->format('N');
+
+            if($weekends || $weekDay < 6){
+                $resultDays[$dbDay] = strftime("%e %B", strtotime($newDay));
+            } elseif(!$weekends && $weekDay >= 6) {
+                $i++;
+            }
+        }
+
+        $result = '';
+        foreach ($resultDays as $dbDate => $eachDay){
+            $result .= "<option value='{$dbDate}'>{$eachDay}</option>";
+        }
+        return new Markup( $result, 'UTF-8' );
     }
 
 }

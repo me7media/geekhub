@@ -5,7 +5,7 @@ services:
     arguments: ['@twig.inner']
     autowire: false
 
-  app.twig.extension:
-    class: App\CatalogBundle\Twig\Catalog_Twig_Extension
-    tags:
-    -  { name: twig.extension }
+#  app.twig.extension:
+#    class: App\CatalogBundle\Twig\Catalog_Twig_Extension
+#    tags:
+#    -  { name: twig.extension }

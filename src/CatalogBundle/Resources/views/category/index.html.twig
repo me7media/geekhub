@@ -32,6 +32,13 @@
                     {% endif %}
                 </td>
             </tr>
+        <tr>
+            <td>
+                <select>
+                    {{ loopweek('today', true) }}
+                </select>
+            </td>
+        </tr>
         {% endfor %}
         </tbody>
     </table>

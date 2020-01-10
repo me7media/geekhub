@@ -26,6 +26,11 @@
         {% else %}
             <tr>
                 <td colspan="3">no records found</td>
+                <td>
+                    {% if isfriday() %}
+                        Lets get beer)
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>

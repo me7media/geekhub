@@ -20,11 +20,9 @@ class CatalogBundleExtension extends Extension
     {
         $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
 
-        dump($fileLocator);
-
         $loader = new Loader\YamlFileLoader($container, $fileLocator);
         $loader->load('services.yaml');
-        $loader->load('routes.yaml');
+//        $loader->load('routes.yaml');
 
     }
 

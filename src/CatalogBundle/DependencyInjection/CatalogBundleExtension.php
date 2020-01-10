@@ -18,16 +18,14 @@ class CatalogBundleExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $configuration = new AccountantConfiguration();
+        $config = $this->processConfiguration($configuration, $configs);
+
         $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
 
         $loader = new Loader\YamlFileLoader($container, $fileLocator);
         $loader->load('services.yaml');
 //        $loader->load('routes.yaml');
 
-    }
-
-    public function getAlias()
-    {
-        return 'catalog_bundle';
     }
 }

@@ -20,7 +20,7 @@ class CatalogBundle extends Bundle
 
     public function getContainerExtension()
     {
-        parent::getContainerExtension();
+            parent::getContainerExtension();
         return new CatalogBundleExtension();
     }
 }

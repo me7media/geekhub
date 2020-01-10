@@ -101,7 +101,7 @@ class Catalog_Twig_Extension extends AbstractExtension
 
         $resultDays = [];
         for($i = 0; count($resultDays) < 7; $i++) {
-            $todayOrDate->add(new DateInterval("P{$i}D"));
+            $todayOrDate->add(DateInterval::createFromDateString("+{$i} day"));
             $newDay = $todayOrDate->format('d F');
             $dbDay = $todayOrDate->format('Y-m-d');
             $weekDay = $todayOrDate->format('N');
@@ -111,6 +111,7 @@ class Catalog_Twig_Extension extends AbstractExtension
             } elseif(!$weekends && $weekDay >= 6) {
                 $i++;
             }
+            $todayOrDate->add(DateInterval::createFromDateString("-{$i} day"));
         }
 
         $result = '';

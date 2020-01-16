@@ -21,6 +21,11 @@ class Category
      */
     private $title;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\CatalogBundle\Entity\Item", inversedBy="category")
+     */
+    private $item;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -34,6 +39,18 @@ class Category
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getItem(): ?Item
+    {
+        return $this->item;
+    }
+
+    public function setItem(?Item $item): self
+    {
+        $this->item = $item;
 
         return $this;
     }

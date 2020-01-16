@@ -37,6 +37,8 @@ class ItemController extends AbstractController
      */
     public function new(Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $item = new Item();
         $form = $this->createForm(ItemType::class, $item);
         $form->handleRequest($request);
@@ -63,6 +65,8 @@ class ItemController extends AbstractController
      */
     public function show(Item $item) 
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         return [
             'item' => $item,
         ];
@@ -77,6 +81,8 @@ class ItemController extends AbstractController
      */
     public function edit(Request $request, Item $item)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(ItemType::class, $item);
         $form->handleRequest($request);
 
@@ -101,6 +107,8 @@ class ItemController extends AbstractController
      */
     public function delete(Request $request, Item $item)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         if ($this->isCsrfTokenValid('delete'.$item->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($item);

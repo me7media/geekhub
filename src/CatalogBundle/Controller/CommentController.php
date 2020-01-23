@@ -83,6 +83,7 @@ class CommentController extends AbstractController
     public function edit(Request $request, Comment $comment)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('edit', $comment);
 
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);

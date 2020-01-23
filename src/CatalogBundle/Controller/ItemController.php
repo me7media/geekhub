@@ -69,6 +69,7 @@ class ItemController extends AbstractController
     public function show(Item $item)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('view', $item);
 
         return [
             'item' => $item,
@@ -85,6 +86,7 @@ class ItemController extends AbstractController
     public function edit(Request $request, Item $item)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('edit', $item);
 
         $form = $this->createForm(ItemType::class, $item);
         $form->handleRequest($request);

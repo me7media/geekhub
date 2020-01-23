@@ -22,6 +22,7 @@ class CatalogExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, $fileLocator);
         $loader->load('services.yaml');
+//        $loader->load('security.yaml');
 //        $loader->load('routes.yaml');
 
     }

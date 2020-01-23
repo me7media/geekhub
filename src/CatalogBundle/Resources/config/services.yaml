@@ -4,3 +4,9 @@ services:
     decoration_inner_name: twig.inner
     arguments: ['@twig.inner']
     autowire: false
+
+#  app_author_voter:
+#    class: App\CatalogBundle\Security\Voter\AuthorVoter
+#    arguments: ['security']
+#    tags:
+#    - { name: security.voter }

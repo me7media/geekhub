@@ -22,7 +22,7 @@ class CategoryController extends AbstractController
      * @param CategoryRepository $categoryRepository
      * @return array
      */
-    public function index(CategoryRepository $categoryRepository)
+    public function index(CategoryRepository $categoryRepository):array
     {
         return [
             'categories' => $categoryRepository->findAll()

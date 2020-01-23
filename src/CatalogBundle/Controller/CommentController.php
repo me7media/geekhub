@@ -2,9 +2,9 @@
 
 namespace App\CatalogBundle\Controller;
 
-use App\CatalogBundle\Entity\Item;
-use App\CatalogBundle\Form\ItemType;
-use App\CatalogBundle\Repository\ItemRepository;
+use App\CatalogBundle\Entity\Comment;
+use App\CatalogBundle\Form\CommentType;
+use App\CatalogBundle\Repository\CommentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,112 +12,110 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/item")
+ * @Route("/comment")
  */
-class ItemController extends AbstractController
+class CommentController extends AbstractController
 {
     /**
-     * @Route("/", name="item_index", methods={"GET"})
+     * @Route("/", name="comment_index", methods={"GET"})
      * @Template()
-     * @param ItemRepository $itemRepository
+     * @param CommentRepository $commentRepository
      * @return array
      */
-    public function index(ItemRepository $itemRepository)
+    public function index(CommentRepository $commentRepository)
     {
         return [
-            'items' => $itemRepository->findAll(),
+            'comments' => $commentRepository->findAll(),
         ];
     }
 
     /**
-     * @Route("/new", name="item_new", methods={"GET","POST"})
+     * @Route("/new", name="comment_new", methods={"GET","POST"})
      * @Template()
      * @param Request $request
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
     public function new(Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $item = new Item();
-        $form = $this->createForm(ItemType::class, $item);
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $item->setCreatedAt(new \DateTime('now'));
-
+            $comment->setCreatedAt(new \DateTime('now'));
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($item);
+            $entityManager->persist($comment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('item_index');
+            return $this->redirectToRoute('comment_index');
         }
 
         return [
-            'item' => $item,
+            'comment' => $comment,
             'form' => $form->createView(),
         ];
     }
 
     /**
-     * @Route("/{id}", name="item_show", methods={"GET"})
+     * @Route("/{id}", name="comment_show", methods={"GET"})
      * @Template()
-     * @param Item $item
+     * @param Comment $comment
      * @return array
      */
-    public function show(Item $item)
+    public function show(Comment $comment)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         return [
-            'item' => $item,
+            'comment' => $comment,
         ];
     }
 
     /**
-     * @Route("/{id}/edit", name="item_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="comment_edit", methods={"GET","POST"})
      * @Template()
      * @param Request $request
-     * @param Item $item
+     * @param Comment $comment
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function edit(Request $request, Item $item)
+    public function edit(Request $request, Comment $comment)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $form = $this->createForm(ItemType::class, $item);
+        $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('item_index');
+            return $this->redirectToRoute('comment_index');
         }
 
         return [
-            'item' => $item,
+            'comment' => $comment,
             'form' => $form->createView(),
         ];
     }
 
     /**
-     * @Route("/{id}", name="item_delete", methods={"DELETE"})
+     * @Route("/{id}", name="comment_delete", methods={"DELETE"})
      * @Template()
      * @param Request $request
-     * @param Item $item
+     * @param Comment $comment
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete(Request $request, Item $item)
+    public function delete(Request $request, Comment $comment)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if ($this->isCsrfTokenValid('delete' . $item->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $comment->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($item);
+            $entityManager->remove($comment);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('item_index');
+        return $this->redirectToRoute('comment_index');
     }
 }

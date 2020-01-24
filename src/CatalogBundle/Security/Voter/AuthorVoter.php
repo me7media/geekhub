@@ -62,7 +62,8 @@ class AuthorVoter extends Voter
      */
     private function canView(AuthorInterface $subject, UserInterface $user):bool
     {
-        return $this->canEdit($subject, $user);
+        return $this->canEdit($subject, $user)
+            || true; //add public attribute
     }
 
     /**

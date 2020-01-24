@@ -21,8 +21,12 @@
                 <td>{{ comment.comment }}</td>
                 <td>{{ comment.createdAt ? comment.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
+                    {% if is_granted('view', comment) %}
                     <a href="{{ path('comment_show', {'id': comment.id}) }}">show</a>
+                    {% endif %}
+                    {% if is_granted('edit', comment) %}
                     <a href="{{ path('comment_edit', {'id': comment.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

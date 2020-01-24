@@ -46,6 +46,7 @@ class ItemController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $item->setCreatedAt(new \DateTime('now'));
+            $item->setAuthor($this->getUser());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($item);

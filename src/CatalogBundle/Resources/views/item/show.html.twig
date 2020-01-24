@@ -28,9 +28,7 @@
         {{ include('@Catalog/item/_delete_form.html.twig') }}
     {% endif %}
 
-    {% if form %}
-        {{ include('@Catalog/comment/_form.html.twig') }}
-    {% endif %}
+    {{ render(controller('App\\CatalogBundle\\Controller\\CommentController::new', { 'item': item })) }}
 
     <a href="{{ path('item_index') }}">back to list</a>
 {% endblock %}

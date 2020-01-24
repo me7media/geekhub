@@ -4,12 +4,10 @@ namespace App\CatalogBundle\Controller;
 
 use App\CatalogBundle\Entity\Item;
 use App\CatalogBundle\Form\ItemType;
-use App\CatalogBundle\Form\ItemCommentType;
 use App\CatalogBundle\Repository\ItemRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -65,29 +63,16 @@ class ItemController extends AbstractController
     /**
      * @Route("/{id}", name="item_show", methods={"GET", "POST"})
      * @Template()
-     * @param Request $request
      * @param Item $item
      * @return array
      */
-    public function show(Request $request, Item $item)
+    public function show(Item $item): array
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->denyAccessUnlessGranted('view', $item);
 
-        //todo test
-        $comment = new Comment();
-        $comment->setItem($item);
-        $form = $this->createForm(ItemCommentType::class, $comment);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            return $this->forward('@Catalog::Controller:CommentController:new', array(
-                $request,
-            ));
-        }
-
         return [
             'item' => $item,
-            'form' => $form->createView()
         ];
     }
 

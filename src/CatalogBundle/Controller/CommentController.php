@@ -3,12 +3,13 @@
 namespace App\CatalogBundle\Controller;
 
 use App\CatalogBundle\Entity\Comment;
+use App\CatalogBundle\Entity\Item;
 use App\CatalogBundle\Form\CommentType;
+use App\CatalogBundle\Form\ItemCommentType;
 use App\CatalogBundle\Repository\CommentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -35,12 +36,20 @@ class CommentController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
-    public function new(Request $request)
+    public function new(Request $request, ?Item $item)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
+
+            $form = $this->createForm(CommentType::class, $comment);
+        if($item){
+            $comment->setItem($item);
+            $form = $this->createForm(ItemCommentType::class, $comment, [
+                'action' => $this->generateUrl('comment_new'),
+            ]);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -51,6 +60,10 @@ class CommentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
+
+            if($item){
+                return $this->redirectToRoute('item_show', ['item' => $item]);
+            }
 
             return $this->redirectToRoute('comment_index');
         }

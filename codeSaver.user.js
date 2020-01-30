@@ -116,7 +116,8 @@
                         name: $('.add_name_for_item_save').val() || 'New',
                         text: textCode,
                         link: window.location.href
-                    }
+                    },
+                    token: 'admin@admin.admin'
                 },
                 success: _success,
                 error: _error

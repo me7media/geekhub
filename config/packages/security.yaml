@@ -15,15 +15,14 @@ security:
                 class: App\Entity\User
                 property: email
     firewalls:
-#        api:
-#            pattern: ^/api
-#            context: main
-#            stateless: false
-#            anonymous: true
-#            guard:
-#                authenticators:
-#                - App\Security\ApiAuthenticator
-#            provider: db_provider
+        api:
+            pattern: ^/api
+            context: main
+            stateless: false
+            anonymous: lazy
+            guard:
+                authenticators:
+                - App\Security\ApiAuthenticator
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false

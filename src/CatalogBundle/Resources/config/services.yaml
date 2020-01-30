@@ -5,7 +5,8 @@ services:
     arguments: ['@twig.inner']
     autowire: false
 
-#  app.twig.extension:
-#    class: App\CatalogBundle\Twig\Catalog_Twig_Extension
+#  app_author_voter:
+#    class: App\CatalogBundle\Security\Voter\AuthorVoter
+#    arguments: ['security']
 #    tags:
-#    -  { name: twig.extension }
+#    - { name: security.voter }

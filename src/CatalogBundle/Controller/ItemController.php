@@ -8,7 +8,6 @@ use App\CatalogBundle\Repository\ItemRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -44,6 +43,10 @@ class ItemController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $item->setCreatedAt(new \DateTime('now'));
+            $item->setAuthor($this->getUser());
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($item);
             $entityManager->flush();
@@ -58,14 +61,15 @@ class ItemController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="item_show", methods={"GET"})
+     * @Route("/{id}", name="item_show", methods={"GET", "POST"})
      * @Template()
      * @param Item $item
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array
      */
-    public function show(Item $item) 
+    public function show(Item $item): array
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('view', $item);
 
         return [
             'item' => $item,
@@ -82,6 +86,7 @@ class ItemController extends AbstractController
     public function edit(Request $request, Item $item)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('edit', $item);
 
         $form = $this->createForm(ItemType::class, $item);
         $form->handleRequest($request);
@@ -109,7 +114,7 @@ class ItemController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if ($this->isCsrfTokenValid('delete'.$item->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $item->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($item);
             $entityManager->flush();

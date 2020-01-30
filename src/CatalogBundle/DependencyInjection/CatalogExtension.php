@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-class CatalogBundleExtension extends Extension
+class CatalogExtension extends Extension
 {
 
     /**
@@ -22,12 +22,6 @@ class CatalogBundleExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, $fileLocator);
         $loader->load('services.yaml');
-//        $loader->load('routes.yaml');
 
-    }
-
-    public function getAlias()
-    {
-        return 'catalog_bundle';
     }
 }

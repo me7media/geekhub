@@ -26,6 +26,26 @@ class Item implements AuthorInterface
     private $title;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\CatalogBundle\Entity\Category", inversedBy="items")
+     */
+    private $category;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $text;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $link;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="items")
      */
     private $author;
@@ -39,11 +59,6 @@ class Item implements AuthorInterface
      * @ORM\OneToMany(targetEntity="App\CatalogBundle\Entity\Comment", mappedBy="item")
      */
     private $comments;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\CatalogBundle\Entity\Category", inversedBy="items")
-     */
-    private $category;
 
     public function __construct()
     {
@@ -149,5 +164,41 @@ class Item implements AuthorInterface
 
     public function __toString() {
         return $this->title;
+    }
+
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    public function setText(?string $text): self
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    public function getLink(): ?string
+    {
+        return $this->link;
+    }
+
+    public function setLink(?string $link): self
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 }

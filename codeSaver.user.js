@@ -108,7 +108,7 @@
 
             let settings = {
                 url: 'http://127.0.0.1:8000/api/item/new',
-                method: 'post',
+                type: 'POST',
                 data: {
                     item : {
                         category: $('.add_category_for_item_save').val() || 'New',

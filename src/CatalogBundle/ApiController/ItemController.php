@@ -7,6 +7,7 @@ use App\CatalogBundle\Entity\Item;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/item")
@@ -14,9 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ItemController extends AbstractController
 {
     /**
-     * @Route("/new", name="item_new", methods={"POST"})
+     * @Route("/new", name="api_item_new", methods={"POST"})
      * @param Request $request
-     * @return array
+     * @return Response
      */
     public function new(Request $request)
     {
@@ -28,7 +29,7 @@ class ItemController extends AbstractController
 
         $category = $this->getDoctrine()
             ->getRepository(Category::class)
-            ->findOneBy($request['category']);
+            ->findOneBy(['title' => $request['category']]);
 
         if(!$category){
             $category = new Category();
@@ -49,8 +50,6 @@ class ItemController extends AbstractController
             $entityManager->persist($item);
             $entityManager->flush();
 
-        return [
-            'item' => $item,
-        ];
+        return new Response($item->getId(), 200);
     }
 }

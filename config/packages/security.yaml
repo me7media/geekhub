@@ -17,8 +17,6 @@ security:
     firewalls:
         api:
             pattern: ^/api
-            context: main
-            stateless: false
             anonymous: lazy
             guard:
                 authenticators:

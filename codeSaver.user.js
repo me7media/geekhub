@@ -25,16 +25,15 @@
         console.log('hello');
         let isDown = false;
         var textCode = "";
-        var $saver_token = "";
+        var $saver_token = "admin@admin.admin";
         var $saver_base_url = "http://127.0.0.1:8000";
 
-        $.ajax({
-            url: $saver_base_url + '/token',
-            type: 'GET',
-        }).done(function ($response) {
-            $saver_token = $response['token'];
-        });
-
+        // $.ajax({
+        //     url: $saver_base_url + '/token',
+        //     type: 'GET',
+        // }).done(function (response) {
+        //     $saver_token = response;
+        // });
 
         $('body').append(`<div id='codeSaver' class='codeSaver_block'>
 		<div class="save-block">

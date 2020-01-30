@@ -33,7 +33,8 @@
 		<p><input type="text" maxlength="50" class="add_name_for_item_save" placeholder="Название"/></p>
 		<p>Твой текст:</p>
 		<pre><code></code></pre>
-		<a href='#' id='codeSaver_btn' style='border: 1px solid #bebebe; background: #fff; padding: 6px 20px;'>Сохранить!</a>
+		<a href='#' id='codeSaver_btn' style='border: 1px solid #bebebe; background: #41ff6a; padding: 6px 20px;'>Сохранить!</a>
+		<button id="close_saver_btn" style='border: 1px solid #bebebe; background: #ff6d66; padding: 6px 20px;'>Закрыть!</button>
 		</div>
 		</div>`);
 
@@ -65,10 +66,6 @@
 
         $("body > *").mousedown(function () {
             isDown = true;
-            $('#codeSaver').css({
-                'width': '0',
-                'opacity': 0
-            })
         });
 
         $('body > *').mouseup(function (e) {
@@ -81,18 +78,24 @@
                 $('#codeSaver').css({
                     'width': '0',
                     'opacity': 0
-                })
+                });
 
                 if (textCode !== '') {
                     $('#codeSaver').css({
                         'width': '400px',
                         'opacity': 1
-                    })
+                    });
 
                     $('#codeSaver code').html(textCode);
                 }
 
                 $('#codeSaver_btn').unbind().on('click', uploadCode);
+                $('#close_saver_btn').unbind().on('click', function () {
+                    $('#codeSaver').css({
+                        'width': '0',
+                        'opacity': 0
+                    });
+                });
 
                 isDown = false;
             }

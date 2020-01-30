@@ -4,8 +4,10 @@
 
 {% block body %}
     <h1>Create new Item</h1>
-
+    <div class="mt-3 mb-3">
     {{ include('@Catalog/item/_form.html.twig') }}
-
+    </div>
+    <div class="mt-12">
     <a href="{{ path('item_index') }}">back to list</a>
+    </div>
 {% endblock %}

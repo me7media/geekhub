@@ -14,6 +14,9 @@ class ItemType extends AbstractType
         $builder
             ->add('category')
             ->add('title')
+            ->add('name')
+            ->add('text')
+            ->add('link')
             ->add('author')
         ;
     }

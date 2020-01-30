@@ -26,19 +26,7 @@
         {% else %}
             <tr>
                 <td colspan="3">no records found</td>
-                <td>
-                    {% if isfriday('2020-01-10') %}
-                        Lets get beer)
-                    {% endif %}
-                </td>
             </tr>
-        <tr>
-            <td>
-                <select>
-                    {{ loopweek('today',false) }}
-                </select>
-            </td>
-        </tr>
         {% endfor %}
         </tbody>
     </table>

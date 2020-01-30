@@ -9,11 +9,15 @@
     </head>
     <body>
     {% if app.user %}
-        <div class="mb-3">
+        <div class="mb-3 mr-auto row justify-content-end">
             Hi, {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
-        {% block body %}{% endblock %}
+    <div class="container">
+        <div class="col-9 offset-1">
+            {% block body %}{% endblock %}
+        </div>
+    </div>
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
     {% endblock %}

@@ -16,12 +16,23 @@
                 <td>{{ item.title }}</td>
             </tr>
             <tr>
+                <th>Name</th>
+                <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+                <th>Text</th>
+                <td>{{ item.text }}</td>
+            </tr>
+            <tr>
+                <th>Link</th>
+                <td>{{ item.link }}</td>
+            </tr>
+            <tr>
                 <th>CreatedAt</th>
                 <td>{{ item.createdAt ? item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
-
     {% if is_granted('edit', item) %}
         <a href="{{ path('item_edit', {'id': item.id}) }}">edit</a>
 

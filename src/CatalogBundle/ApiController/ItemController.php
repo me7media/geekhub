@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ItemController extends AbstractController
 {
     /**
-     * @Route("/new", name="item_new", methods={"GET","POST"})
+     * @Route("/new", name="item_new", methods={"POST"})
      * @param Request $request
      * @return array
      */

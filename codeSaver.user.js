@@ -62,6 +62,7 @@
             'white-space': 'unset',
             'margin-bottom': '40px'
         })
+
         $("body > *").mousedown(function () {
             isDown = true;
         });
@@ -90,6 +91,11 @@
                 $('#codeSaver_btn').unbind().on('click', uploadCode);
 
                 isDown = false;
+            } else {
+                $('#codeSaver').css({
+                    'width': '0',
+                    'opacity': 0
+                })
             }
 
         });
@@ -124,6 +130,10 @@
     function _success(response) {
         console.log('success');
         console.log(response);
+        $('#codeSaver').css({
+            'width': '0',
+            'opacity': 0
+        })
     }
 
     function _error(response) {

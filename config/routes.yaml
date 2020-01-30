@@ -6,3 +6,8 @@ catalog_bundle:
   # loads routes from the YAML or XML files found in some bundle directory
   resource: '@CatalogBundle/Controller/'
   type:     annotation
+
+api_catalog_bundle:
+  # loads routes from the YAML or XML files found in some bundle directory
+  resource: '@CatalogBundle/ApiController/'
+  type:     annotation

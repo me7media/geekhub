@@ -110,11 +110,13 @@
                 url: 'http://127.0.0.1:8000/api/item/new',
                 method: 'post',
                 data: {
-                    category: $('.add_category_for_item_save').val() || 'New',
-                    title: document.title,
-                    name: $('.add_name_for_item_save').val() || 'New',
-                    text: textCode,
-                    link: window.location.href
+                    item : {
+                        category: $('.add_category_for_item_save').val() || 'New',
+                        title: document.title,
+                        name: $('.add_name_for_item_save').val() || 'New',
+                        text: textCode,
+                        link: window.location.href
+                    }
                 },
                 success: _success,
                 error: _error

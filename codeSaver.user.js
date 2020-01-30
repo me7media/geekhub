@@ -18,7 +18,7 @@
         include("https://code.jquery.com/jquery-3.2.1.min.js");
     }
 
-    setTimeout(scriptAction, 600);
+    setTimeout(scriptAction, 1000);
 
 
     function scriptAction() {
@@ -65,6 +65,10 @@
 
         $("body > *").mousedown(function () {
             isDown = true;
+            $('#codeSaver').css({
+                'width': '0',
+                'opacity': 0
+            })
         });
 
         $('body > *').mouseup(function (e) {
@@ -91,11 +95,6 @@
                 $('#codeSaver_btn').unbind().on('click', uploadCode);
 
                 isDown = false;
-            } else {
-                $('#codeSaver').css({
-                    'width': '0',
-                    'opacity': 0
-                })
             }
 
         });

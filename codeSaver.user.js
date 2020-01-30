@@ -30,7 +30,7 @@
         $('body').append(`<div id='codeSaver' class='codeSaver_block'>
 		<div class="save-block">
 		<p><input type="text" maxlength="50" class="add_category_for_item_save" placeholder="Категория"/></p>
-		<p><input maxlength="50" class="add_name_for_item_save" placeholder="Название"/></p>
+		<p><input type="text" maxlength="50" class="add_name_for_item_save" placeholder="Название"/></p>
 		<p>Твой текст:</p>
 		<pre><code></code></pre>
 		<a href='#' id='codeSaver_btn' style='border: 1px solid #bebebe; background: #fff; padding: 6px 20px;'>Сохранить!</a>

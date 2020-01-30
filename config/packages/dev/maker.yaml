@@ -1,2 +1,2 @@
-maker:
-  root_namespace: 'App\CatalogBundle'
+#maker:
+#  root_namespace: 'App\CatalogBundle'

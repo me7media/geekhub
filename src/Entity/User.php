@@ -28,10 +28,10 @@ class User implements UserInterface
      */
     private $email;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+//    /**
+//     * @ORM\Column(type="json")
+//     */
+//    private $roles = [];
 
     /**
      * @var string The hashed password
@@ -54,10 +54,16 @@ class User implements UserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Role", mappedBy="users")
+     */
+    private $roles;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
 
@@ -86,21 +92,6 @@ class User implements UserInterface
     public function getUsername(): string
     {
         return (string) $this->username;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-        if('admin@admin.admin' === $this->getEmail()){
-            $roles[] = 'ROLE_ADMIN';
-        }
-
-        return array_unique($roles);
     }
 
     public function setRoles(array $roles): self
@@ -213,5 +204,38 @@ class User implements UserInterface
 
     public function __toString() {
         return $this->username;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = [];
+        $roles[] = 'ROLE_USER';
+        foreach ($this->roles as $role) {
+            $roles[] = $role->getRole();
+        }
+        return array_unique($roles);
+    }
+
+    public function addRole(Role $role): self
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+            $role->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): self
+    {
+        if ($this->roles->contains($role)) {
+            $this->roles->removeElement($role);
+            $role->removeUser($this);
+        }
+
+        return $this;
     }
 }

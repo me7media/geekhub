@@ -25,6 +25,15 @@
         console.log('hello');
         let isDown = false;
         var textCode = "";
+        var $saver_token = "";
+        var $saver_base_url = "http://127.0.0.1:8000";
+
+        $.ajax({
+            url: $saver_base_url + '/token',
+            type: 'GET',
+        }).done(function ($response) {
+            $saver_token = $response['token'];
+        });
 
 
         $('body').append(`<div id='codeSaver' class='codeSaver_block'>
@@ -107,7 +116,7 @@
             textCode = $('#codeSaver code').html();
 
             let settings = {
-                url: 'http://127.0.0.1:8000/api/item/new',
+                url: $saver_base_url + '/api/item/new',
                 type: 'POST',
                 data: {
                     item : {
@@ -117,13 +126,17 @@
                         text: textCode,
                         link: window.location.href
                     },
-                    token: 'admin@admin.admin'
+                    token: $saver_token
                 },
                 success: _success,
                 error: _error
             };
 
-            $.ajax(settings);
+            if($saver_token){
+                $.ajax(settings);
+            } else {
+                alert('Вы не авторизированы! Для авторизации войдете в свой акаунт "Saver" и обновите двнную станицу!')
+            }
 
             console.log('we need to save this ', textCode);
 

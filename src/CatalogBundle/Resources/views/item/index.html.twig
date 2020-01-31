@@ -8,11 +8,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
                 <th>Name</th>
-                <th>Text</th>
-                <th>Link</th>
+                <th>Page Title</th>
                 <th>CreatedAt</th>
                 <th>actions</th>
             </tr>
@@ -20,18 +17,15 @@
         <tbody>
         {% for item in items %}
             <tr>
-                <td>{{ item.id }}</td>
-                <td>{{ item.title }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.text }}</td>
-                <td>{{ item.link }}</td>
+                <td>{{ item.name[:50] ~ '...' }}</td>
+                <td>{{ item.title[:50] ~ '...'}}</td>
                 <td>{{ item.createdAt ? item.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     {% if is_granted('view', item) %}
-                        <a href="{{ path('item_show', {'id': item.id}) }}">show</a>
+                        <a class="btn btn-success" href="{{ path('item_show', {'id': item.id}) }}">show</a>
                     {% endif %}
                     {% if is_granted('edit', item) %}
-                        <a href="{{ path('item_edit', {'id': item.id}) }}">edit</a>
+                        <a class="btn btn-info" href="{{ path('item_edit', {'id': item.id}) }}">edit</a>
                     {% endif %}
                 </td>
             </tr>

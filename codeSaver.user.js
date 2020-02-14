@@ -13,12 +13,12 @@
     'use strict';
 
 
-    if (typeof window.$ !== 'undefined' &&
-        typeof window.jQuery !== 'undefined') {
+    // if (typeof window.$ !== 'undefined' &&
+    //     typeof window.jQuery !== 'undefined') {
         include("https://code.jquery.com/jquery-3.2.1.min.js");
-    }
+    // }
 
-    setTimeout(scriptAction, 1000);
+    setTimeout(scriptAction, 600);
 
 
     function scriptAction() {
@@ -28,15 +28,15 @@
         var $saver_token = "admin@admin.admin";
         var $saver_base_url = "http://127.0.0.1:8000";
 
-        $.ajax({
-            url: $saver_base_url + '/token',
-            type: 'GET',
-            headers: {
-                "Authorization": "Basic " + btoa($saver_USERNAME + ":" + $saver_PASSWORD)
-            },
-        }).done(function (response) {
-            $saver_token = response;
-        });
+        // $.ajax({
+        //     url: $saver_base_url + '/token',
+        //     type: 'GET',
+        //     headers: {
+        //         "Authorization": "Basic " + btoa($saver_USERNAME + ":" + $saver_PASSWORD)
+        //     },
+        // }).done(function (response) {
+        //     $saver_token = response;
+        // });
 
         $('body').append(`<div id='codeSaver' class='codeSaver_block'>
 		<div class="save-block">

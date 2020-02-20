@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Code Saver
 // @namespace    http://bjiast.net/
-// @version      1.0
+// @version      1.01
 // @description  try to take over the world!
 // @author       bjiast, me.media.dev
 // @match        http://*/*
@@ -9,171 +9,67 @@
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
-(function () {
+(function() {
     'use strict';
 
+    console.log('hello');
 
-    // if (typeof window.$ !== 'undefined' &&
-    //     typeof window.jQuery !== 'undefined') {
-        include("https://code.jquery.com/jquery-3.2.1.min.js");
-    // }
+    let mouseUpListener = function(e){
+        // let button = document.querySelector('#codeSaver_btn');
 
-    setTimeout(scriptAction, 600);
+        // if(button != null){
+        //     document.removeEventListener('mouseup', mouseUpListener, false);
 
+        //     return false;
+        // }
 
-    function scriptAction() {
-        console.log('hello');
-        let isDown = false;
-        var textCode = "";
-        var $saver_token = "admin@admin.admin";
-        var $saver_base_url = "http://127.0.0.1:8000";
+        let resultObj = getSelectionText(e),
+            textCode = resultObj.text,
+            mouseX = resultObj.startPosition,
+            mouseY = resultObj.endPosition;
 
-        // $.ajax({
-        //     url: $saver_base_url + '/token',
-        //     type: 'GET',
-        //     headers: {
-        //         "Authorization": "Basic " + btoa($saver_USERNAME + ":" + $saver_PASSWORD)
-        //     },
-        // }).done(function (response) {
-        //     $saver_token = response;
-        // });
+        let removeElem = document.getElementsByClassName('codeSaver_block');
 
-        $('body').append(`<div id='codeSaver' class='codeSaver_block'>
-		<div class="save-block">
-		<p><input type="text" maxlength="50" class="add_category_for_item_save" placeholder="Категория"/></p>
-		<p><input type="text" maxlength="50" class="add_name_for_item_save" placeholder="Название"/></p>
-		<p>Твой текст:</p>
-		<pre><code></code></pre>
-		<a href='#' id='codeSaver_btn' style='border: 1px solid #bebebe; background: #41ff6a; padding: 6px 20px;'>Сохранить!</a>
-		<button id="close_saver_btn" style='border: 1px solid #bebebe; background: #ff6d66; padding: 6px 20px;'>Закрыть!</button>
-		</div>
-		</div>`);
-
-        $('#codeSaver').css({
-            'position': 'fixed',
-            'right': '0px',
-            'top': 0,
-            'z-index': 9999999999,
-            'width': '0',
-            'background': 'rgba(0,0,0,.2)',
-            'height': '100%',
-            'padding': '10% 0',
-            'text-align': 'center',
-            'border-left': '1px solid #000',
-            'overflow-y': 'auto',
-            'opacity': '0',
-            'transition': 'width 180ms ease-out, opacity 120ms ease-in'
-        });
-        $('#codeSaver p, #codeSaver h4').css({
-            'background': '#fff',
-            'padding': "10px 0"
-        });
-        $('#codeSaver code').css({
-            'display': 'block',
-            'width': '100%',
-            'white-space': 'unset',
-            'margin-bottom': '40px'
-        })
-
-        $("body > *").mousedown(function () {
-            isDown = true;
-        });
-
-        $('body > *').mouseup(function (e) {
-
-            if (isDown && e.shiftKey) {
-
-                let resultObj = getSelectionText(e),
-                    textCode = resultObj.text;
-
-                $('#codeSaver').css({
-                    'width': '0',
-                    'opacity': 0
-                });
-
-                if (textCode !== '') {
-                    $('#codeSaver').css({
-                        'width': '400px',
-                        'opacity': 1
-                    });
-
-                    $('#codeSaver code').html(textCode);
-                }
-
-                $('#codeSaver_btn').unbind().on('click', uploadCode);
-                $('#close_saver_btn').unbind().on('click', function () {
-                    $('#codeSaver').css({
-                        'width': '0',
-                        'opacity': 0
-                    });
-                });
-
-                isDown = false;
-            }
-
-        });
-
-        function uploadCode() {
-
-            textCode = $('#codeSaver code').html();
-
-            let settings = {
-                url: $saver_base_url + '/api/item/new',
-                type: 'POST',
-                data: {
-                    item : {
-                        category: $('.add_category_for_item_save').val() || 'New',
-                        title: document.title,
-                        name: $('.add_name_for_item_save').val() || 'New',
-                        text: textCode,
-                        link: window.location.href
-                    },
-                    token: $saver_token
-                },
-                success: _success,
-                error: _error
-            };
-
-            if($saver_token){
-                $.ajax(settings);
-            } else {
-                alert('Вы не авторизированы! Для авторизации войдете в свой акаунт "Saver" и обновите двнную станицу!')
-            }
-
-            console.log('we need to save this ', textCode);
-
-            return false;
+        while(removeElem[0]){
+            removeElem[0].parentNode.removeChild(removeElem[0]);
         }
 
+        if(textCode !== ''){
+            let addElem = document.createElement('div');
+
+            addElem.innerHTML = "<a href='#' id='codeSaver_btn' style='border: 1px solid #bebebe; background: #cecece; padding: 6px 20px;'>Сохранить!</a>";
+            addElem.style.position = 'absolute';
+            addElem.style.left = mouseX + 'px';
+            addElem.style.top = mouseY + 'px';
+            addElem.style.zindex = '999999999999';
+            addElem.classList.add("codeSaver_block");
+
+
+            document.body.appendChild(addElem);
+
+            let button = document.querySelector('#codeSaver_btn');
+            button.onclick = uploadCode(event);
+            console.log(resultObj);
+        }
     }
 
-    function _success(response) {
-        console.log('success');
-        console.log(response);
-        $('#codeSaver').css({
-            'width': '0',
-            'opacity': 0
-        })
-    }
 
-    function _error(response) {
-        console.log('error');
-        console.log(response);
-    }
+    document.body.addEventListener('mouseup', mouseUpListener, false);
+
 
     function getSelectionText(event) {
         let result = {};
         if (window.getSelection) {
             result['text'] = window.getSelection().toString();
+            result['startPosition'] = event.screenX + 10;
+            result['endPosition'] =  event.screenY - 90;
         }
-
-        console.log(result);
         return result;
     }
 
-    function include(url) {
-        var script = document.createElement('script');
-        script.src = url;
-        document.getElementsByTagName('head')[0].appendChild(script);
+    function uploadCode(e){
+
+        console.log('click');
+        e.preventDefault();
     }
 })();

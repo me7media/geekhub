@@ -11,3 +11,6 @@ api_catalog_bundle:
   # loads routes from the YAML or XML files found in some bundle directory
   resource: '@CatalogBundle/ApiController/'
   type:     annotation
+
+api_login_check:
+  path: /api/login_check

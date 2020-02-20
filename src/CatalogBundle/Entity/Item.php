@@ -2,6 +2,7 @@
 
 namespace App\CatalogBundle\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\CatalogBundle\Interfaces\AuthorInterface;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\CatalogBundle\Repository\ItemRepository")
+ * @ApiResource
  */
 class Item implements AuthorInterface
 {

@@ -18,12 +18,4 @@ class HomeController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/token", name="token")
-     */
-    public function token()
-    {
-        return new Response($this->getUser()->getEmail(), 200);
-    }
-
 }

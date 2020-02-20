@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
@@ -15,8 +18,18 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class SecurityController extends AbstractController
 {
+
+//    private $encoder;
+//
+//    public function __construct($encoder)
+//    {
+//        $this->encoder = $encoder;
+//    }
+
     /**
      * @Route("/login", name="app_login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -76,4 +89,48 @@ class SecurityController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/token", name="token")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param JWTEncoderInterface $jwt
+     * @return JsonResponse
+     * @throws \Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException
+     */
+    public function token(Request $request, UserPasswordEncoderInterface $passwordEncoder, JWTEncoderInterface $jwt):JsonResponse
+    {
+//        $token = $this->encoder
+//            ->encode([
+//                'username' => 'admin@admin.admin',
+//                'exp' => time() + 3600 // 1 hour expiration
+//            ]);
+//        return new JsonResponse(['token' => $token]);
+
+        $email = $request->get('email') ?? $request->get('username') ?? $request->getUser() ?? 'no';
+
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneBy(['email' => $email]);
+
+        if (!$user) {
+            throw $this->createNotFoundException();
+        }
+
+        $pass = $request->get('password') ?? $request->get('pass') ?? $request->getPassword() ?? 'no';
+
+        $isValid = $passwordEncoder->isPasswordValid($user, $pass);
+
+        if (!$isValid) {
+            throw new BadCredentialsException('Bad, you are very bad!');
+        }
+
+        $token = $jwt->encode([
+                'username' => $user->getEmail(),
+                'exp' => time() + 3600 // 1 hour expiration
+            ]);
+
+        return new JsonResponse(['token' => $token]);
+    }
+
 }

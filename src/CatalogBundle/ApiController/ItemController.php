@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/api/item")
+ * @Route("/v0/api/item")
  */
 class ItemController extends AbstractController
 {
